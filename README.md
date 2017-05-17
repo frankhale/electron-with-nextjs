@@ -5,6 +5,8 @@ content.
 
 ## How To Run
 
+**NOTE**: `next build` does not seem to work when using `material-ui` from a Windows command prompt. In order to make the build succeed you'll need to use the cygwin bash shell instead.
+
 I'll revise this later but want to get something here quickly. The instructions 
 to run 'electron-with-nextjs' are almost entirely the same as with my other 
 project [electron-with-express](https://github.com/frankhale/electron-with-express#how-to-run).
