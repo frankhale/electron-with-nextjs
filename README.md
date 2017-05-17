@@ -6,9 +6,17 @@
 A project that spawns a Next.JS app from Electron and uses it to serve it's 
 content.
 
-Next.JS App:
+App Main UI:
 
 ![NextJS-App](screenshots/next-app.png)
+
+Drawer:
+
+![NextJS-App](screenshots/next-app-drawer.png)
+
+Server Log:
+
+![NextJS-App-Server-Log](screenshots/next-app-server-log.png)
 
 ## How To Run
 

@@ -14,7 +14,8 @@
     "start": ".\\node.exe start-electron.js"
   },
   "url": "http://127.0.0.1",
-  "port": "62000",
+  "port": 62000,
+  "ioPort": 62001,
   "node": {
     "exe": ".\\node.exe",
     "args": [

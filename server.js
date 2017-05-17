@@ -15,7 +15,7 @@ const dev = process.env.NODE_ENV !== "production",
   };
 
 io.on("connection", socket => {
-  console.log("Socket.IO was connected...");
+  console.log("Socket.IO was connected at the server level...");
 
   socket.on("message", data => {
     console.log(`received from client: ${data}`);

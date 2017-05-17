@@ -1,44 +1,40 @@
 window.$ = window.jQuery = require("./node_modules/jquery/dist/jquery.min.js");
 
-const pkgJSON = require("./package.json");
-let env = Object.create(process.env);
+const pkgJSON = require("./package.json"),
+  url = `${pkgJSON.url}:${pkgJSON.port}`,
+  io = require("socket.io")(pkgJSON.ioPort),
+  spawn = require("child_process").spawn,
+  _ = require("lodash"),
+  request = require("request"),
+  $nextApp = $("#nextApp"),
+  $loading = $("#loading");
+
+let env = Object.create(process.env), serverOutput = [];
 
 if (pkgJSON.node.production) {
   env.NODE_ENV = "production";
 }
 
-const url = `${pkgJSON.url}:${pkgJSON.port}`,
-  spawn = require("child_process").spawn,
-  // For electron-packager change cwd in spawn to app.getAppPath() and
-  // uncomment the app require below
-  //app = require('electron').remote.app,
-  node = spawn(pkgJSON.node.exe, pkgJSON.node.args, {
-    cwd: process.cwd(),
-    env: env
-  }),
-  request = require("request"),
-  _ = require("lodash"),
-  key = require("keymaster"),
-  $serverLogContainer = $("#serverLogContainer"),
-  $log = $("#log"),
-  $nextApp = $("#nextApp"),
-  $loading = $("#loading");
+// For electron-packager change cwd in spawn to app.getAppPath() and
+// uncomment the app require below
+//app = require('electron').remote.app,
+const node = spawn(pkgJSON.node.exe, pkgJSON.node.args, {
+  cwd: process.cwd(),
+  env: env
+});
 
-key("f1", () => {
-  if ($serverLogContainer.css("display") === "none") {
-    $serverLogContainer.css("display", "block");
-    $nextApp.addClass("nextAppHide");
-  } else {
-    $nextApp.removeClass("nextAppHide");
-    $serverLogContainer.css("display", "none");
-  }
+io.on("connection", socket => {
+  console.log("Socket.IO was connected at the browser top level...");
+
+  socket.on("get-server-output", () => {
+    socket.emit("server-output", serverOutput);
+  });
 });
 
 function redirectOutput(x) {
   x.on("data", data => {
-    const output = data.toString();
-    console.log(output);
-    $log.append(_.escape(output));
+    //_.escape(data.toString())
+    serverOutput.push(data.toString());
   });
 }
 

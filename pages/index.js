@@ -1,17 +1,18 @@
 import Head from "next/head";
-
 import io from "socket.io-client";
-
 import React, { Component } from "react";
 import injectTapEventPlugin from "react-tap-event-plugin";
 import darkBaseTheme from "material-ui/styles/baseThemes/darkBaseTheme";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import Dialog from "material-ui/Dialog";
 import Drawer from "material-ui/Drawer";
 import MenuItem from "material-ui/MenuItem";
+import FlatButton from "material-ui/FlatButton";
 import IconButton from "material-ui/IconButton";
 import HamburgerIcon from "material-ui/svg-icons/navigation/menu";
 import HomeIcon from "material-ui/svg-icons/action/home";
+import ListIcon from "material-ui/svg-icons/action/list";
 import {
   Toolbar,
   ToolbarGroup,
@@ -29,6 +30,15 @@ try {
 
 const _muiTheme = getMuiTheme(darkBaseTheme);
 
+const customContentStyle = {
+  width: "100%",
+  maxWidth: "none"
+},
+  serverLogStyle = {
+    padding: "5px",
+    overflow: "auto !important"
+  };
+
 class Main extends Component {
   static getInitialProps({ req }) {
     const userAgent = req ? req.headers["user-agent"] : navigator.userAgent;
@@ -41,7 +51,9 @@ class Main extends Component {
 
     this.state = {
       open: false,
-      title: "Loading..."
+      serverLogOpen: false,
+      title: "Loading...",
+      serverLog: []
     };
   }
 
@@ -56,8 +68,13 @@ class Main extends Component {
         });
       });
 
-    this.socket = io();
-    this.socket.emit("message", "test message");
+    this.socket = io("http://localhost:62001");
+    this.socket.on("server-output", output => {
+      console.log(output);
+      this.setState({
+        serverLog: output
+      });
+    });
   }
 
   componentWillUnmount() {
@@ -65,7 +82,17 @@ class Main extends Component {
   }
 
   handleToggle = () => this.setState({ open: !this.state.open });
-  handleClose = () => this.setState({ open: false });
+  handleServerLogDialogClose = () => this.setState({ serverLogOpen: false });
+  handleHome = () => {
+    this.setState({ open: false });
+  };
+  handleServerLog = () => {
+    this.socket.emit("get-server-output");
+    this.setState({
+      open: false,
+      serverLogOpen: true
+    });
+  };
 
   render() {
     const { userAgent } = this.props;
@@ -109,10 +136,31 @@ class Main extends Component {
             open={this.state.open}
             onRequestChange={open => this.setState({ open })}
           >
-            <MenuItem onTouchTap={this.handleClose} leftIcon={<HomeIcon />}>
+            <MenuItem onTouchTap={this.handleHome} leftIcon={<HomeIcon />}>
               Home
             </MenuItem>
+            <MenuItem onTouchTap={this.handleServerLog} leftIcon={<ListIcon />}>
+              Server Log
+            </MenuItem>
           </Drawer>
+          <Dialog
+            title="Next.JS Server Log"
+            actions={
+              <FlatButton
+                label="Ok"
+                primary={true}
+                onTouchTap={this.handleServerLogDialogClose}
+              />
+            }
+            modal={true}
+            contentStyle={customContentStyle}
+            open={this.state.serverLogOpen}
+            autoScrollBodyContent={true}
+          >
+            <pre>
+              {this.state.serverLog.join("")}
+            </pre>
+          </Dialog>
           <Head>
             <title>{this.state.title}</title>
             <link
