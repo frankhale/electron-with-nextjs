@@ -1,14 +1,20 @@
 window.$ = window.jQuery = require("./node_modules/jquery/dist/jquery.min.js");
 
-const pkgJSON = require("./package.json"),
-  url = `${pkgJSON.url}:${pkgJSON.port}`,
+const pkgJSON = require("./package.json");
+let env = Object.create(process.env);
+
+if (pkgJSON.node.production) {
+  env.NODE_ENV = "production";
+}
+
+const url = `${pkgJSON.url}:${pkgJSON.port}`,
   spawn = require("child_process").spawn,
   // For electron-packager change cwd in spawn to app.getAppPath() and
   // uncomment the app require below
   //app = require('electron').remote.app,
-
   node = spawn(pkgJSON.node.exe, pkgJSON.node.args, {
-    cwd: process.cwd()
+    cwd: process.cwd(),
+    env: env
   }),
   request = require("request"),
   _ = require("lodash"),

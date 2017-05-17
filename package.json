@@ -11,15 +11,14 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": ".\\node start-electron.js",
-    "next-dev": ".\\node server.js",
-    "start": "set NODE_ENV=production && .\\node.exe start-electron.js"
+    "start": ".\\node.exe start-electron.js"
   },
   "url": "http://127.0.0.1",
   "port": "62000",
   "node": {
     "exe": ".\\node.exe",
-    "args": ["server.js"]
+    "args": ["server.js"],
+    "production": false
   },
   "dependencies": {
     "electron": "next",
@@ -28,7 +27,7 @@
     "keymaster": "^1.6.2",
     "lodash": "^4.17.4",
     "material-ui": "^0.18.0",
-    "next": "latest",
+    "next": "beta",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
