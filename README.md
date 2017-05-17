@@ -1,5 +1,4 @@
-# NOTE: THIS IS A WORK IN PROGRESS
-
+# NOTE: THIS IS A WORK IN PROGRESS, THINGS CHANGING RAPIDLY
 
 # electron-with-nextjs
 
@@ -18,9 +17,21 @@ Server Log:
 
 ![NextJS-App-Server-Log](screenshots/next-app-server-log.png)
 
+## Architecture
+
+(TODO...)
+
 ## How To Run
 
-I'll revise this later but want to get something here quickly. 
+(I'll revise this later but want to get something here quickly.)
+
+Here is what the source layout looks like (notice a splistreamed version of 
+Node.exe and Node.lib. This will be used to spawn the Next.JS app)
+
+Source Folder Layout:
+
+![NextJS-App-Folder-Layout](screenshots/next-app-folder-layout.png)
+
 
 The instructions to run 'electron-with-nextjs' are almost entirely the same as 
 with my other project [electron-with-express](https://github.com/frankhale/electron-with-express).
