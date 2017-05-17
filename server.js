@@ -11,7 +11,8 @@ const dev = process.env.NODE_ENV !== "production",
   nextApp = next({ dev }),
   nextHandler = nextApp.getRequestHandler(),
   appInfo = {
-    title: pkgJSON.title
+    title: pkgJSON.title,
+    package: pkgJSON
   };
 
 io.on("connection", socket => {

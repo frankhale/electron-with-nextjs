@@ -63,18 +63,18 @@ class Main extends Component {
         return response.json();
       })
       .then(json => {
+        console.log(json);
+        this.socket = io(`http://localhost:${json.package.ioPort}`);
+        this.socket.on("server-output", output => {
+          this.setState({
+            serverLog: output
+          });
+        });
+
         this.setState({
           title: json.title
         });
       });
-
-    this.socket = io("http://localhost:62001");
-    this.socket.on("server-output", output => {
-      console.log(output);
-      this.setState({
-        serverLog: output
-      });
-    });
   }
 
   componentWillUnmount() {
