@@ -1,4 +1,7 @@
 import Head from "next/head";
+
+import io from "socket.io-client";
+
 import React, { Component } from "react";
 import injectTapEventPlugin from "react-tap-event-plugin";
 import darkBaseTheme from "material-ui/styles/baseThemes/darkBaseTheme";
@@ -52,6 +55,13 @@ class Main extends Component {
           title: json.title
         });
       });
+
+    this.socket = io();
+    this.socket.emit("message", "test message");
+  }
+
+  componentWillUnmount() {
+    this.socket.close();
   }
 
   handleToggle = () => this.setState({ open: !this.state.open });

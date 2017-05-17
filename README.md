@@ -1,15 +1,21 @@
+# NOTE: THIS IS A WORK IN PROGRESS
+
+
 # electron-with-nextjs
 
 A project that spawns a Next.JS app from Electron and uses it to serve it's 
 content.
 
+Next.JS App:
+
+![NextJS-App](screenshots/next-app.png)
+
 ## How To Run
 
-**NOTE**: `next build` does not seem to work when using `material-ui` from a Windows command prompt. In order to make the build succeed you'll need to use the cygwin bash shell instead.
+I'll revise this later but want to get something here quickly. 
 
-I'll revise this later but want to get something here quickly. The instructions 
-to run 'electron-with-nextjs' are almost entirely the same as with my other 
-project [electron-with-express](https://github.com/frankhale/electron-with-express#how-to-run).
+The instructions to run 'electron-with-nextjs' are almost entirely the same as 
+with my other project [electron-with-express](https://github.com/frankhale/electron-with-express).
 
 What differs is that for a production build you need to run 'next build' and
 change the the 'production' key in the 'node' section of package.json to true.

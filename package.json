@@ -17,22 +17,26 @@
   "port": "62000",
   "node": {
     "exe": ".\\node.exe",
-    "args": ["server.js"],
+    "args": [
+      "server.js"
+    ],
     "production": false
   },
   "dependencies": {
-    "electron": "next",
+    "electron": "^1.6.8",
     "express": "^4.15.2",
     "jquery": "^3.2.1",
     "keymaster": "^1.6.2",
     "lodash": "^4.17.4",
     "material-ui": "^0.18.0",
-    "next": "beta",
+    "next": "^2.4.0",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-tap-event-plugin": "^2.0.1",
     "request": "^2.81.0",
+    "socket.io": "^2.0.1",
+    "socket.io-client": "^2.0.1",
     "strip": "^3.0.0"
   }
 }
