@@ -41,6 +41,27 @@ const customContentStyle = {
     overflow: "auto !important"
   };
 
+const MoreStuffMenu = props => {
+  if (props.userAgent.indexOf("Electron") > -1) {
+    return (
+      <ToolbarGroup lastChild={true}>
+        <IconMenu
+          iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+          targetOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "top" }}
+        >
+          <MenuItem
+            primaryText="Toggle Fullscreen"
+            onTouchTap={props.onTouchTap}
+          />
+        </IconMenu>
+      </ToolbarGroup>
+    );
+  } else {
+    return null;
+  }
+};
+
 class Main extends Component {
   static getInitialProps({ req }) {
     const userAgent = req ? req.headers["user-agent"] : navigator.userAgent;
@@ -98,8 +119,10 @@ class Main extends Component {
   };
   handleFullScreenClick = () => {
     this.socket.emit("toggle-fullscreen");
-    // let elem = document.getElementById("nextAppContent");
 
+    // I want to do the code below but menu's and dialogs stop working! FUCK!
+    //
+    // let elem = document.getElementById("nextAppContent");
     // if (elem.webkitRequestFullscreen) {
     //   this.setState(
     //     {
@@ -147,18 +170,10 @@ class Main extends Component {
                 <HamburgerIcon onTouchTap={this.handleToggle} />
               </IconButton>
             </ToolbarGroup>
-            <ToolbarGroup lastChild={true}>
-              <IconMenu
-                iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-                targetOrigin={{ horizontal: "right", vertical: "top" }}
-                anchorOrigin={{ horizontal: "right", vertical: "top" }}
-              >
-                <MenuItem
-                  primaryText="Toggle Fullscreen"
-                  onClick={this.handleFullScreenClick}
-                />
-              </IconMenu>
-            </ToolbarGroup>
+            <MoreStuffMenu
+              userAgent={userAgent}
+              onTouchTap={this.handleFullScreenClick}
+            />
           </Toolbar>
           <div
             style={{ textAlign: "center", color: "#fff", marginTop: "120px" }}
