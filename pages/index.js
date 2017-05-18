@@ -42,7 +42,7 @@ const customContentStyle = {
   };
 
 const MoreStuffMenu = props => {
-  if (props.userAgent.indexOf("Electron") > -1) {
+  if (props.userAgent && props.userAgent.indexOf("Electron") > -1) {
     return (
       <ToolbarGroup lastChild={true}>
         <IconMenu

@@ -41,7 +41,9 @@ io.on("connection", socket => {
 function redirectOutput(x) {
   x.on("data", data => {
     //_.escape(data.toString())
-    serverOutput.push(data.toString());
+    let output = data.toString();
+    console.log(output);
+    serverOutput.push(output);
   });
 }
 
