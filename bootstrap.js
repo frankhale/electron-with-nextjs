@@ -4,12 +4,13 @@ const pkgJSON = require("./package.json"),
   url = `${pkgJSON.url}:${pkgJSON.port}`,
   io = require("socket.io")(pkgJSON.ioPort),
   spawn = require("child_process").spawn,
+  electron = require("electron"),
   _ = require("lodash"),
   request = require("request"),
   $nextApp = $("#nextApp"),
   $loading = $("#loading");
 
-let env = Object.create(process.env), serverOutput = [];
+let env = Object.create(process.env), serverOutput = [], fullscreen = false;
 
 if (pkgJSON.node.production) {
   env.NODE_ENV = "production";
@@ -28,6 +29,12 @@ io.on("connection", socket => {
 
   socket.on("get-server-output", () => {
     socket.emit("server-output", serverOutput);
+  });
+
+  socket.on("toggle-fullscreen", () => {
+    const window = electron.remote.getCurrentWindow();
+    fullscreen = !fullscreen;
+    window.setFullScreen(fullscreen);
   });
 });
 

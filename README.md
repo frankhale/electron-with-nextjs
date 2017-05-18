@@ -21,6 +21,9 @@ Server Log:
 
 (TODO...)
 
+Just a real quick note about `pages/index.js`... It's a mess, it'll be fixed 
+soon.
+
 ## How To Run
 
 (I'll revise this later but want to get something here quickly.)

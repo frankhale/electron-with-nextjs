@@ -7,12 +7,14 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import Dialog from "material-ui/Dialog";
 import Drawer from "material-ui/Drawer";
+import IconMenu from "material-ui/IconMenu";
 import MenuItem from "material-ui/MenuItem";
 import FlatButton from "material-ui/FlatButton";
 import IconButton from "material-ui/IconButton";
 import HamburgerIcon from "material-ui/svg-icons/navigation/menu";
 import HomeIcon from "material-ui/svg-icons/action/home";
 import ListIcon from "material-ui/svg-icons/action/list";
+import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
 import {
   Toolbar,
   ToolbarGroup,
@@ -53,7 +55,8 @@ class Main extends Component {
       open: false,
       serverLogOpen: false,
       title: "Loading...",
-      serverLog: []
+      serverLog: [],
+      fullscreen: false
     };
   }
 
@@ -63,8 +66,8 @@ class Main extends Component {
         return response.json();
       })
       .then(json => {
-        console.log(json);
-        this.socket = io(`http://localhost:${json.package.ioPort}`);
+        //console.log(json);
+        this.socket = io(`${json.package.url}:${json.package.ioPort}`);
         this.socket.on("server-output", output => {
           this.setState({
             serverLog: output
@@ -93,6 +96,25 @@ class Main extends Component {
       serverLogOpen: true
     });
   };
+  handleFullScreenClick = () => {
+    this.socket.emit("toggle-fullscreen");
+    // let elem = document.getElementById("nextAppContent");
+
+    // if (elem.webkitRequestFullscreen) {
+    //   this.setState(
+    //     {
+    //       fullscreen: !this.state.fullscreen
+    //     },
+    //     () => {
+    //       if (this.state.fullscreen) {
+    //         elem.webkitRequestFullscreen();
+    //       } else {
+    //         elem.webkitExitFullscreen();
+    //       }
+    //     }
+    //   );
+    // }
+  };
 
   render() {
     const { userAgent } = this.props;
@@ -106,6 +128,7 @@ class Main extends Component {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div
+          id="nextAppContent"
           style={{
             backgroundColor: muiTheme.palette.canvasColor,
             position: "absolute",
@@ -123,6 +146,18 @@ class Main extends Component {
               <IconButton>
                 <HamburgerIcon onTouchTap={this.handleToggle} />
               </IconButton>
+            </ToolbarGroup>
+            <ToolbarGroup lastChild={true}>
+              <IconMenu
+                iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+                targetOrigin={{ horizontal: "right", vertical: "top" }}
+                anchorOrigin={{ horizontal: "right", vertical: "top" }}
+              >
+                <MenuItem
+                  primaryText="Toggle Fullscreen"
+                  onClick={this.handleFullScreenClick}
+                />
+              </IconMenu>
             </ToolbarGroup>
           </Toolbar>
           <div
