@@ -1,9 +1,12 @@
 window.$ = window.jQuery = require("./node_modules/jquery/dist/jquery.min.js");
 
-const pkgJSON = require("./package.json"),
-  url = `${pkgJSON.url}:${pkgJSON.port}`,
-  io = require("socket.io")(pkgJSON.ioPort),
-  spawn = require("child_process").spawn,
+const spawn = require("child_process").spawn,
+  pkgJSON = require("./package.json"),
+  url = `${pkgJSON.app.url}:${pkgJSON.app.port}`,
+  io = require("socket.io")(pkgJSON.app.ioPort),
+  nodeExe = pkgJSON.app.node.exe,
+  nodeArgs = pkgJSON.app.node.args,
+  isProduction = pkgJSON.app.node.production,
   electron = require("electron"),
   _ = require("lodash"),
   request = require("request"),
@@ -12,14 +15,18 @@ const pkgJSON = require("./package.json"),
 
 let env = Object.create(process.env), serverOutput = [], fullscreen = false;
 
-if (pkgJSON.node.production) {
+if (isProduction) {
   env.NODE_ENV = "production";
+} else {
+  $nextApp[0].addEventListener("did-finish-load", e => {
+    $nextApp[0].openDevTools();
+  });
 }
 
 // For electron-packager change cwd in spawn to app.getAppPath() and
 // uncomment the app require below
 //app = require('electron').remote.app,
-const node = spawn(pkgJSON.node.exe, pkgJSON.node.args, {
+const node = spawn(nodeExe, nodeArgs, {
   cwd: process.cwd(),
   env: env
 });

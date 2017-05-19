@@ -56,6 +56,8 @@ Then to run you type: `npm run start`
 
 If you just want to run in dev make sure the 'production' key is set to false and then just run it with `npm run start`
 
+**NOTE**: Running in development mode is pretty slow to boot. This is normal as Next.js is doing it's thing and getting ready to serve the page. Running in production mode after doing a build is fast.
+
 ## Author(s)
 
 Frank Hale &lt;frankhale@gmail.com&gt;  

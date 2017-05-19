@@ -59,7 +59,7 @@ export default class Main extends Component {
       })
       .then(json => {
         //console.log(json);
-        this.socket = io(`${json.package.url}:${json.package.ioPort}`);
+        this.socket = io(`${json.package.app.url}:${json.package.app.ioPort}`);
         this.socket.on("server-output", output => {
           this.setState({
             serverLog: output

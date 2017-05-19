@@ -2,7 +2,9 @@ const app = require("express")(),
   server = require("http").Server(app),
   io = require("socket.io")(server),
   next = require("next"),
-  pkgJSON = require("./package.json");
+  pkgJSON = require("./package.json"),
+  port = pkgJSON.app.port,
+  url = `${pkgJSON.app.url}:${port}`;
 
 global.navigator = global.navigator || {};
 global.navigator.userAgent = global.navigator.userAgent || "all";
@@ -40,8 +42,8 @@ nextApp.prepare().then(() => {
     return nextHandler(req, res);
   });
 
-  server.listen(pkgJSON.port, err => {
+  server.listen(port, err => {
     if (err) throw err;
-    console.log(`> Ready on ${pkgJSON.url}:${pkgJSON.port}`);
+    console.log(`> Ready on ${url}`);
   });
 });

@@ -16,11 +16,15 @@ function createWindow() {
   });
   mainWindow.loadURL(`file://${__dirname}/index.html`);
   mainWindow.once("ready-to-show", () => {
-    if (!pkgJSON.node.production) {
-      BrowserWindow.addDevToolsExtension(`${__dirname}\\react-devtools`);
+    if (!pkgJSON.app.node.production) {
+      BrowserWindow.addDevToolsExtension(
+        `${__dirname}\\${pkgJSON.app["react-devtools-path"]}`
+      );
     }
     mainWindow.show();
-    mainWindow.webContents.openDevTools();
+    if (!pkgJSON.app.node.production) {
+      mainWindow.webContents.openDevTools();
+    }
   });
   mainWindow.on("closed", () => {
     mainWindow = null;
