@@ -120,7 +120,7 @@ export default class Main extends Component {
     );
 
     return (
-      <Layout userAgent={this.userAgent}>
+      <Layout userAgent={userAgent}>
         <Toolbar style={{ backgroundColor: muiTheme.palette.canvasColor }}>
           <ToolbarGroup firstChild={true}>
             <IconButton>
@@ -165,7 +165,6 @@ export default class Main extends Component {
             {this.state.serverLog.join("")}
           </pre>
         </Dialog>
-
         <div style={{ textAlign: "center", color: "#fff", marginTop: "120px" }}>
           <h1>Hello, World!</h1>
         </div>

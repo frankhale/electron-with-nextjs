@@ -16,6 +16,9 @@ function createWindow() {
   });
   mainWindow.loadURL(`file://${__dirname}/index.html`);
   mainWindow.once("ready-to-show", () => {
+    if (!pkgJSON.node.production) {
+      BrowserWindow.addDevToolsExtension(`${__dirname}\\react-devtools`);
+    }
     mainWindow.show();
     mainWindow.webContents.openDevTools();
   });
