@@ -14,13 +14,15 @@ import IconButton from "material-ui/IconButton";
 import HamburgerIcon from "material-ui/svg-icons/navigation/menu";
 import HomeIcon from "material-ui/svg-icons/action/home";
 import ListIcon from "material-ui/svg-icons/action/list";
-import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
+
 import {
   Toolbar,
   ToolbarGroup,
   ToolbarSeparator,
   ToolbarTitle
 } from "material-ui/Toolbar";
+
+import RightSideMenu from "../components/rightSideMenu";
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -41,28 +43,7 @@ const customContentStyle = {
     overflow: "auto !important"
   };
 
-const MoreStuffMenu = props => {
-  if (props.userAgent && props.userAgent.indexOf("Electron") > -1) {
-    return (
-      <ToolbarGroup lastChild={true}>
-        <IconMenu
-          iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-          targetOrigin={{ horizontal: "right", vertical: "top" }}
-          anchorOrigin={{ horizontal: "right", vertical: "top" }}
-        >
-          <MenuItem
-            primaryText="Toggle Fullscreen"
-            onTouchTap={props.onTouchTap}
-          />
-        </IconMenu>
-      </ToolbarGroup>
-    );
-  } else {
-    return null;
-  }
-};
-
-class Main extends Component {
+export default class Main extends Component {
   static getInitialProps({ req }) {
     const userAgent = req ? req.headers["user-agent"] : navigator.userAgent;
     const isServer = !!req;
@@ -170,10 +151,12 @@ class Main extends Component {
                 <HamburgerIcon onTouchTap={this.handleToggle} />
               </IconButton>
             </ToolbarGroup>
-            <MoreStuffMenu
-              userAgent={userAgent}
-              onTouchTap={this.handleFullScreenClick}
-            />
+            <RightSideMenu userAgent={userAgent}>
+              <MenuItem
+                primaryText="Toggle Fullscreen"
+                onTouchTap={this.handleFullScreenClick}
+              />
+            </RightSideMenu>
           </Toolbar>
           <div
             style={{ textAlign: "center", color: "#fff", marginTop: "120px" }}
@@ -213,16 +196,9 @@ class Main extends Component {
           </Dialog>
           <Head>
             <title>{this.state.title}</title>
-            <link
-              href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
-              rel="stylesheet"
-            />
-            <link rel="stylesheet" type="text/css" href="./static/app.css" />
           </Head>
         </div>
       </MuiThemeProvider>
     );
   }
 }
-
-export default Main;
