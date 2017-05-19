@@ -1,19 +1,19 @@
 import Head from "next/head";
 import io from "socket.io-client";
 import React, { Component } from "react";
-import injectTapEventPlugin from "react-tap-event-plugin";
+import Layout from "../components/layout";
 import darkBaseTheme from "material-ui/styles/baseThemes/darkBaseTheme";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import Dialog from "material-ui/Dialog";
 import Drawer from "material-ui/Drawer";
 import IconMenu from "material-ui/IconMenu";
-import MenuItem from "material-ui/MenuItem";
 import FlatButton from "material-ui/FlatButton";
-import IconButton from "material-ui/IconButton";
-import HamburgerIcon from "material-ui/svg-icons/navigation/menu";
 import HomeIcon from "material-ui/svg-icons/action/home";
 import ListIcon from "material-ui/svg-icons/action/list";
+import HamburgerIcon from "material-ui/svg-icons/navigation/menu";
+import IconButton from "material-ui/IconButton";
+import MenuItem from "material-ui/MenuItem";
+import RightSideMenu from "../components/rightSideMenu";
 
 import {
   Toolbar,
@@ -22,17 +22,7 @@ import {
   ToolbarTitle
 } from "material-ui/Toolbar";
 
-import RightSideMenu from "../components/rightSideMenu";
-
-// Needed for onTouchTap
-// http://stackoverflow.com/a/34015469/988941
-try {
-  if (typeof window !== "undefined") {
-    injectTapEventPlugin();
-  }
-} catch (e) {}
-
-const _muiTheme = getMuiTheme(darkBaseTheme);
+const muiDarkTheme = getMuiTheme(darkBaseTheme);
 
 const customContentStyle = {
   width: "100%",
@@ -126,79 +116,68 @@ export default class Main extends Component {
       {
         userAgent: userAgent
       },
-      _muiTheme
+      muiDarkTheme
     );
 
     return (
-      <MuiThemeProvider muiTheme={muiTheme}>
-        <div
-          id="nextAppContent"
-          style={{
-            backgroundColor: muiTheme.palette.canvasColor,
-            position: "absolute",
-            top: "0",
-            left: "0",
-            minWidth: "100%",
-            minHeight: "100%",
-            width: "100%",
-            height: "100%",
-            overflow: "auto"
-          }}
+      <Layout userAgent={this.userAgent}>
+        <Toolbar style={{ backgroundColor: muiTheme.palette.canvasColor }}>
+          <ToolbarGroup firstChild={true}>
+            <IconButton>
+              <HamburgerIcon onTouchTap={this.handleToggle} />
+            </IconButton>
+          </ToolbarGroup>
+          <RightSideMenu userAgent={userAgent}>
+            <MenuItem
+              primaryText="Toggle Fullscreen"
+              onTouchTap={this.handleFullScreenClick}
+            />
+          </RightSideMenu>
+        </Toolbar>
+        <Drawer
+          id="NavigationDrawer"
+          docked={false}
+          open={this.state.open}
+          onRequestChange={open => this.setState({ open })}
         >
-          <Toolbar style={{ backgroundColor: muiTheme.palette.canvasColor }}>
-            <ToolbarGroup firstChild={true}>
-              <IconButton>
-                <HamburgerIcon onTouchTap={this.handleToggle} />
-              </IconButton>
-            </ToolbarGroup>
-            <RightSideMenu userAgent={userAgent}>
-              <MenuItem
-                primaryText="Toggle Fullscreen"
-                onTouchTap={this.handleFullScreenClick}
-              />
-            </RightSideMenu>
-          </Toolbar>
-          <div
-            style={{ textAlign: "center", color: "#fff", marginTop: "120px" }}
-          >
-            <h1>UI Goes Here</h1>
-          </div>
-          <Drawer
-            id="NavigationDrawer"
-            docked={false}
-            open={this.state.open}
-            onRequestChange={open => this.setState({ open })}
-          >
-            <MenuItem onTouchTap={this.handleHome} leftIcon={<HomeIcon />}>
-              Home
-            </MenuItem>
-            <MenuItem onTouchTap={this.handleServerLog} leftIcon={<ListIcon />}>
-              Server Log
-            </MenuItem>
-          </Drawer>
-          <Dialog
-            title="Next.JS Server Log"
-            actions={
-              <FlatButton
-                label="Ok"
-                primary={true}
-                onTouchTap={this.handleServerLogDialogClose}
-              />
-            }
-            modal={true}
-            contentStyle={customContentStyle}
-            open={this.state.serverLogOpen}
-            autoScrollBodyContent={true}
-          >
-            <pre>
-              {this.state.serverLog.join("")}
-            </pre>
-          </Dialog>
-          <Head>
-            <title>{this.state.title}</title>
-          </Head>
+          <MenuItem onTouchTap={this.handleHome} leftIcon={<HomeIcon />}>
+            Home
+          </MenuItem>
+          <MenuItem onTouchTap={this.handleServerLog} leftIcon={<ListIcon />}>
+            Server Log
+          </MenuItem>
+        </Drawer>
+        <Dialog
+          title="Next.JS Server Log"
+          actions={
+            <FlatButton
+              label="Ok"
+              primary={true}
+              onTouchTap={this.handleServerLogDialogClose}
+            />
+          }
+          modal={true}
+          contentStyle={customContentStyle}
+          open={this.state.serverLogOpen}
+          autoScrollBodyContent={true}
+        >
+          <pre>
+            {this.state.serverLog.join("")}
+          </pre>
+        </Dialog>
+
+        <div style={{ textAlign: "center", color: "#fff", marginTop: "120px" }}>
+          <h1>Hello, World!</h1>
         </div>
-      </MuiThemeProvider>
+        <Head>
+          <title>{this.state.title}</title>
+          <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+            rel="stylesheet"
+          />
+          <link rel="stylesheet" type="text/css" href="./static/app.css" />
+        </Head>
+      </Layout>
     );
   }
 }
