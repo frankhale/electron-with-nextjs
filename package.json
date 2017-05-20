@@ -23,7 +23,7 @@
       "args": [
         "server.js"
       ],
-      "production": true
+      "production": false
     }
   },
   "dependencies": {
