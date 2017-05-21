@@ -5,7 +5,6 @@ import Layout from "../components/layout";
 import darkBaseTheme from "material-ui/styles/baseThemes/darkBaseTheme";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import Dialog from "material-ui/Dialog";
-import Drawer from "material-ui/Drawer";
 import IconMenu from "material-ui/IconMenu";
 import FlatButton from "material-ui/FlatButton";
 import HomeIcon from "material-ui/svg-icons/action/home";
@@ -13,7 +12,9 @@ import ListIcon from "material-ui/svg-icons/action/list";
 import HamburgerIcon from "material-ui/svg-icons/navigation/menu";
 import IconButton from "material-ui/IconButton";
 import MenuItem from "material-ui/MenuItem";
-import RightSideMenu from "../components/rightSideMenu";
+
+import RightMenu from "../components/rightMenu";
+import LeftMenu from "../components/leftMenu";
 
 import {
   Toolbar,
@@ -127,16 +128,14 @@ export default class Main extends Component {
               <HamburgerIcon onTouchTap={this.handleToggle} />
             </IconButton>
           </ToolbarGroup>
-          <RightSideMenu userAgent={userAgent}>
+          <RightMenu userAgent={userAgent}>
             <MenuItem
               primaryText="Toggle Fullscreen"
               onTouchTap={this.handleFullScreenClick}
             />
-          </RightSideMenu>
+          </RightMenu>
         </Toolbar>
-        <Drawer
-          id="NavigationDrawer"
-          docked={false}
+        <LeftMenu
           open={this.state.open}
           onRequestChange={open => this.setState({ open })}
         >
@@ -146,7 +145,7 @@ export default class Main extends Component {
           <MenuItem onTouchTap={this.handleServerLog} leftIcon={<ListIcon />}>
             Server Log
           </MenuItem>
-        </Drawer>
+        </LeftMenu>
         <Dialog
           title="Next.JS Server Log"
           actions={

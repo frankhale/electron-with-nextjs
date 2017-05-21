@@ -11,7 +11,7 @@ import {
 
 // TODO: We need to use prop-types to require userAgent
 
-const RightSideMenu = props => {
+const RightMenu = props => {
   if (props.userAgent && props.userAgent.indexOf("Electron") > -1) {
     return (
       <ToolbarGroup lastChild={true}>
@@ -29,4 +29,4 @@ const RightSideMenu = props => {
   }
 };
 
-export default RightSideMenu;
+export default RightMenu;
