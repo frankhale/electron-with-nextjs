@@ -6,6 +6,7 @@ const LeftMenu = props => {
       docked={false}
       open={props.open}
       onRequestChange={props.onRequestChange}
+      onClick={props.onRequestChange}
     >
       {props.children}
     </Drawer>

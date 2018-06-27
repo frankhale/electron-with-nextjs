@@ -16,19 +16,14 @@ import MenuItem from "material-ui/MenuItem";
 import RightMenu from "../components/rightMenu";
 import LeftMenu from "../components/leftMenu";
 
-import {
-  Toolbar,
-  ToolbarGroup,
-  ToolbarSeparator,
-  ToolbarTitle
-} from "material-ui/Toolbar";
+import { Toolbar, ToolbarGroup } from "material-ui/Toolbar";
 
 const muiDarkTheme = getMuiTheme(darkBaseTheme);
 
 const customContentStyle = {
-  width: "100%",
-  maxWidth: "none"
-},
+    width: "100%",
+    maxWidth: "none"
+  },
   serverLogStyle = {
     padding: "5px",
     overflow: "auto !important"
@@ -77,7 +72,9 @@ export default class Main extends Component {
     this.socket.close();
   }
 
-  handleToggle = () => this.setState({ open: !this.state.open });
+  handleToggle = () => {
+    this.setState({ open: !this.state.open });
+  };
   handleServerLogDialogClose = () => this.setState({ serverLogOpen: false });
   handleHome = () => {
     this.setState({ open: false });
@@ -92,23 +89,21 @@ export default class Main extends Component {
   handleFullScreenClick = () => {
     this.socket.emit("toggle-fullscreen");
 
-    // I want to do the code below but menu's and dialogs stop working! FUCK!
-    //
-    // let elem = document.getElementById("nextAppContent");
-    // if (elem.webkitRequestFullscreen) {
-    //   this.setState(
-    //     {
-    //       fullscreen: !this.state.fullscreen
-    //     },
-    //     () => {
-    //       if (this.state.fullscreen) {
-    //         elem.webkitRequestFullscreen();
-    //       } else {
-    //         elem.webkitExitFullscreen();
-    //       }
-    //     }
-    //   );
-    // }
+    let elem = document.getElementById("nextAppContent");
+    if (elem.webkitRequestFullscreen) {
+      this.setState(
+        {
+          fullscreen: !this.state.fullscreen
+        },
+        () => {
+          if (this.state.fullscreen) {
+            elem.webkitRequestFullscreen();
+          } else {
+            elem.webkitExitFullscreen();
+          }
+        }
+      );
+    }
   };
 
   render() {
@@ -125,13 +120,17 @@ export default class Main extends Component {
         <Toolbar style={{ backgroundColor: muiTheme.palette.canvasColor }}>
           <ToolbarGroup firstChild={true}>
             <IconButton>
-              <HamburgerIcon onTouchTap={this.handleToggle} />
+              <HamburgerIcon
+                onTouchTap={this.handleToggle}
+                onClick={this.handleToggle}
+              />
             </IconButton>
           </ToolbarGroup>
           <RightMenu userAgent={userAgent}>
             <MenuItem
               primaryText="Toggle Fullscreen"
               onTouchTap={this.handleFullScreenClick}
+              onClick={this.handleFullScreenClick}
             />
           </RightMenu>
         </Toolbar>
@@ -139,10 +138,18 @@ export default class Main extends Component {
           open={this.state.open}
           onRequestChange={open => this.setState({ open })}
         >
-          <MenuItem onTouchTap={this.handleHome} leftIcon={<HomeIcon />}>
+          <MenuItem
+            onTouchTap={this.handleHome}
+            onClick={this.handleHome}
+            leftIcon={<HomeIcon />}
+          >
             Home
           </MenuItem>
-          <MenuItem onTouchTap={this.handleServerLog} leftIcon={<ListIcon />}>
+          <MenuItem
+            onClick={this.handleServerLog}
+            onTouchTap={this.handleServerLog}
+            leftIcon={<ListIcon />}
+          >
             Server Log
           </MenuItem>
         </LeftMenu>
@@ -153,6 +160,7 @@ export default class Main extends Component {
               label="Ok"
               primary={true}
               onTouchTap={this.handleServerLogDialogClose}
+              onClick={this.handleServerLogDialogClose}
             />
           }
           modal={true}
@@ -160,9 +168,7 @@ export default class Main extends Component {
           open={this.state.serverLogOpen}
           autoScrollBodyContent={true}
         >
-          <pre>
-            {this.state.serverLog.join("")}
-          </pre>
+          <pre>{this.state.serverLog.join("")}</pre>
         </Dialog>
         <div style={{ textAlign: "center", color: "#fff", marginTop: "120px" }}>
           <h1>Hello, World!</h1>
